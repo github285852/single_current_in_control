@@ -95,25 +95,48 @@
  269                     ; 25 }
  272  008e 5b06          	addw	sp,#6
  273  0090 81            	ret
- 296                     ; 26 void config_ram2flash(void)
- 296                     ; 27 {
- 297                     	switch	.text
- 298  0091               _config_ram2flash:
- 302                     ; 29 }
- 305  0091 81            	ret
- 328                     ; 30 void config_flash2ram(void)
- 328                     ; 31 {
- 329                     	switch	.text
- 330  0092               _config_flash2ram:
- 334                     ; 33 }
- 337  0092 81            	ret
- 350                     	xdef	_config_flash2ram
- 351                     	xdef	_config_ram2flash
- 352                     	xdef	_eeprom_read_nbyte
- 353                     	xdef	_eeprom_write_nbyte
- 354                     	xref.b	c_lreg
- 373                     	xref	c_rtol
- 374                     	xref	c_uitolx
- 375                     	xref	c_ladd
- 376                     	xref	c_ltor
- 377                     	end
+ 298                     ; 26 void config_ram2flash(void)
+ 298                     ; 27 {
+ 299                     	switch	.text
+ 300  0091               _config_ram2flash:
+ 304                     ; 28 	eeprom_write_nbyte(ConfigAddr,(unsigned char *) &Sys.Config, sizeof (Sys.Config));
+ 306  0091 ae0021        	ldw	x,#33
+ 307  0094 89            	pushw	x
+ 308  0095 ae0006        	ldw	x,#_Sys+6
+ 309  0098 89            	pushw	x
+ 310  0099 ae0000        	ldw	x,#0
+ 311  009c 89            	pushw	x
+ 312  009d ae0000        	ldw	x,#0
+ 313  00a0 89            	pushw	x
+ 314  00a1 cd0000        	call	_eeprom_write_nbyte
+ 316  00a4 5b08          	addw	sp,#8
+ 317                     ; 29 }
+ 320  00a6 81            	ret
+ 345                     ; 30 void config_flash2ram(void)
+ 345                     ; 31 {
+ 346                     	switch	.text
+ 347  00a7               _config_flash2ram:
+ 351                     ; 32 	eeprom_read_nbyte(ConfigAddr, (unsigned char *) &Sys.Config, sizeof (Sys.Config));
+ 353  00a7 ae0021        	ldw	x,#33
+ 354  00aa 89            	pushw	x
+ 355  00ab ae0006        	ldw	x,#_Sys+6
+ 356  00ae 89            	pushw	x
+ 357  00af ae0000        	ldw	x,#0
+ 358  00b2 89            	pushw	x
+ 359  00b3 ae0000        	ldw	x,#0
+ 360  00b6 89            	pushw	x
+ 361  00b7 ad98          	call	_eeprom_read_nbyte
+ 363  00b9 5b08          	addw	sp,#8
+ 364                     ; 33 }
+ 367  00bb 81            	ret
+ 380                     	xref.b	_Sys
+ 381                     	xdef	_config_flash2ram
+ 382                     	xdef	_config_ram2flash
+ 383                     	xdef	_eeprom_read_nbyte
+ 384                     	xdef	_eeprom_write_nbyte
+ 385                     	xref.b	c_lreg
+ 404                     	xref	c_rtol
+ 405                     	xref	c_uitolx
+ 406                     	xref	c_ladd
+ 407                     	xref	c_ltor
+ 408                     	end

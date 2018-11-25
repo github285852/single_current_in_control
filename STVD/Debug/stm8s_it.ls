@@ -270,59 +270,82 @@
 1119  00ac               L334:
 1120                     ; 215 }
 1123  00ac 81            	ret
-1148                     ; 217 INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
-1148                     ; 218 {
-1150                     	switch	.text
-1151  00ad               f_TIM4_UPD_OVF_IRQHandler:
-1155                     ; 219 	t2ms++;
-1157  00ad 3c00          	inc	_t2ms
-1158                     ; 220 	if(t2ms > 4)
-1160  00af b600          	ld	a,_t2ms
-1161  00b1 a105          	cp	a,#5
-1162                     ; 234 	TIM4->SR1 = (uint8_t)~0x01;
-1164  00b3 35fe5344      	mov	21316,#254
-1165                     ; 235 }
-1168  00b7 80            	iret
-1191                     ; 236 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
-1191                     ; 237 {
-1192                     	switch	.text
-1193  00b8               f_EEPROM_EEC_IRQHandler:
-1197                     ; 238 }
-1200  00b8 80            	iret
-1241                     	xdef	_t1s_loop
-1242                     	xdef	f_TIM3_CAP_COM_IRQHandler
-1243                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
-1244                     	xdef	_t1s
-1245                     	xdef	_t10ms
-1246                     	xdef	_t2ms
-1247                     	xdef	f_EEPROM_EEC_IRQHandler
-1248                     	xdef	f_TIM4_UPD_OVF_IRQHandler
-1249                     	xdef	f_ADC1_IRQHandler
-1250                     	xdef	f_I2C_IRQHandler
-1251                     	xdef	f_UART1_RX_IRQHandler
-1252                     	xdef	f_UART1_TX_IRQHandler
-1253                     	xdef	f_TIM2_CAP_COM_IRQHandler
-1254                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
-1255                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
-1256                     	xdef	f_TIM1_CAP_COM_IRQHandler
-1257                     	xdef	f_SPI_IRQHandler
-1258                     	xdef	f_EXTI_PORTE_IRQHandler
-1259                     	xdef	f_EXTI_PORTD_IRQHandler
-1260                     	xdef	f_EXTI_PORTC_IRQHandler
-1261                     	xdef	f_EXTI_PORTB_IRQHandler
-1262                     	xdef	f_EXTI_PORTA_IRQHandler
-1263                     	xdef	f_CLK_IRQHandler
-1264                     	xdef	f_AWU_IRQHandler
-1265                     	xdef	f_TLI_IRQHandler
-1266                     	xdef	f_TRAP_IRQHandler
-1267                     	xdef	f_NonHandledInterrupt
-1268                     	xref	_assert_failed
-1269                     	xdef	_TIM2_GetITStatus
-1270                     	xdef	_TIM2_GetCounter
-1271                     	xdef	_TIM2_SetCompare1
-1272                     	xdef	_TIM2_SetCounter
-1273                     .const:	section	.text
-1274  0000               L141:
-1275  0000 2e2e5c736f75  	dc.b	"..\source\hal\stm8"
-1276  0012 735f69742e63  	dc.b	"s_it.c",0
-1296                     	end
+1150                     ; 217 INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+1150                     ; 218 {
+1152                     	switch	.text
+1153  00ad               f_TIM4_UPD_OVF_IRQHandler:
+1155  00ad 3b0002        	push	c_x+2
+1156  00b0 be00          	ldw	x,c_x
+1157  00b2 89            	pushw	x
+1158  00b3 3b0002        	push	c_y+2
+1159  00b6 be00          	ldw	x,c_y
+1160  00b8 89            	pushw	x
+1163                     ; 219 	t2ms++;
+1165  00b9 3c00          	inc	_t2ms
+1166                     ; 220 	if(t2ms > 4)
+1168  00bb b600          	ld	a,_t2ms
+1169  00bd a105          	cp	a,#5
+1170  00bf 2507          	jrult	L744
+1171                     ; 222 		t2ms = 0;
+1173  00c1 3f00          	clr	_t2ms
+1174                     ; 223 		t10ms++;
+1176  00c3 3c01          	inc	_t10ms
+1177                     ; 224 		key_service();
+1179  00c5 cd0000        	call	_key_service
+1181  00c8               L744:
+1182                     ; 226 	TIM4->SR1 = (uint8_t)~0x01;
+1184  00c8 35fe5344      	mov	21316,#254
+1185                     ; 227 }
+1188  00cc 85            	popw	x
+1189  00cd bf00          	ldw	c_y,x
+1190  00cf 320002        	pop	c_y+2
+1191  00d2 85            	popw	x
+1192  00d3 bf00          	ldw	c_x,x
+1193  00d5 320002        	pop	c_x+2
+1194  00d8 80            	iret
+1217                     ; 228 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+1217                     ; 229 {
+1218                     	switch	.text
+1219  00d9               f_EEPROM_EEC_IRQHandler:
+1223                     ; 230 }
+1226  00d9 80            	iret
+1267                     	xdef	_t1s_loop
+1268                     	xdef	f_TIM3_CAP_COM_IRQHandler
+1269                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+1270                     	xdef	_t1s
+1271                     	xdef	_t10ms
+1272                     	xdef	_t2ms
+1273                     	xref	_key_service
+1274                     	xdef	f_EEPROM_EEC_IRQHandler
+1275                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+1276                     	xdef	f_ADC1_IRQHandler
+1277                     	xdef	f_I2C_IRQHandler
+1278                     	xdef	f_UART1_RX_IRQHandler
+1279                     	xdef	f_UART1_TX_IRQHandler
+1280                     	xdef	f_TIM2_CAP_COM_IRQHandler
+1281                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+1282                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+1283                     	xdef	f_TIM1_CAP_COM_IRQHandler
+1284                     	xdef	f_SPI_IRQHandler
+1285                     	xdef	f_EXTI_PORTE_IRQHandler
+1286                     	xdef	f_EXTI_PORTD_IRQHandler
+1287                     	xdef	f_EXTI_PORTC_IRQHandler
+1288                     	xdef	f_EXTI_PORTB_IRQHandler
+1289                     	xdef	f_EXTI_PORTA_IRQHandler
+1290                     	xdef	f_CLK_IRQHandler
+1291                     	xdef	f_AWU_IRQHandler
+1292                     	xdef	f_TLI_IRQHandler
+1293                     	xdef	f_TRAP_IRQHandler
+1294                     	xdef	f_NonHandledInterrupt
+1295                     	xref	_assert_failed
+1296                     	xdef	_TIM2_GetITStatus
+1297                     	xdef	_TIM2_GetCounter
+1298                     	xdef	_TIM2_SetCompare1
+1299                     	xdef	_TIM2_SetCounter
+1300                     .const:	section	.text
+1301  0000               L141:
+1302  0000 2e2e5c736f75  	dc.b	"..\source\hal\stm8"
+1303  0012 735f69742e63  	dc.b	"s_it.c",0
+1304                     	xref.b	c_x
+1305                     	xref.b	c_y
+1325                     	end

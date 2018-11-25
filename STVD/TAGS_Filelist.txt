@@ -15,7 +15,6 @@ stm8_interrupt_vector.c
 ..\source\stm8s_stdperiph_driver\src\stm8s_flash.c
 ..\source\stm8s_stdperiph_driver\src\stm8s_gpio.c
 ..\source\stm8s_stdperiph_driver\src\stm8s_itc.c
-..\source\stm8s_stdperiph_driver\src\stm8s_iwdg.c
 ..\source\stm8s_stdperiph_driver\src\stm8s_rst.c
 ..\source\stm8s_stdperiph_driver\inc\stm8s.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_clk.h
@@ -23,9 +22,11 @@ stm8_interrupt_vector.c
 ..\source\stm8s_stdperiph_driver\inc\stm8s_flash.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_gpio.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_itc.h
-..\source\stm8s_stdperiph_driver\inc\stm8s_iwdg.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_rst.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_tim1.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_tim2.h
 ..\source\stm8s_stdperiph_driver\inc\stm8s_tim4.h
 c:\program files (x86)\cosmic\cxstm8_32k\hstm8\mods0.h
+c:\program files (x86)\cosmic\cxstm8_32k\hstm8\stdio.h
+c:\program files (x86)\cosmic\cxstm8_32k\hstm8\stdlib.h
+c:\program files (x86)\cosmic\cxstm8_32k\hstm8\string.h

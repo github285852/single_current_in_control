@@ -219,17 +219,9 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 	t2ms++;
 	if(t2ms > 4)
 	{
-/*		t2ms = 0;
+		t2ms = 0;
 		t10ms++;
-		Sys.sys_10ms++;
 		key_service();
-		t10ms_service();
-		last_cmd_tim_cnt++;
-		if(last_cmd_tim_cnt>25)
-		{
-			last_cmd = 0xFF;
-			last_cmd_tim_cnt = 0;
-		}*/
 	}
 	TIM4->SR1 = (uint8_t)~0x01;
 }

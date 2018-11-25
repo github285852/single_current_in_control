@@ -1,5 +1,5 @@
 
-#include "stm8s.h"
+#include "hardware.h"
 
 void eeprom_write_nbyte(unsigned long addr,unsigned char * buf,unsigned int len)
 {
@@ -25,9 +25,9 @@ void eeprom_read_nbyte(unsigned long addr,unsigned char * buf, unsigned int len)
 }
 void config_ram2flash(void)
 {
-	//eeprom_write_nbyte(ConfigAddr,(unsigned char *) &Sys.Config, sizeof (Sys.Config));
+	eeprom_write_nbyte(ConfigAddr,(unsigned char *) &Sys.Config, sizeof (Sys.Config));
 }
 void config_flash2ram(void)
 {
-	//eeprom_read_nbyte(ConfigAddr, (unsigned char *) &Sys.Config, sizeof (Sys.Config));
+	eeprom_read_nbyte(ConfigAddr, (unsigned char *) &Sys.Config, sizeof (Sys.Config));
 }
